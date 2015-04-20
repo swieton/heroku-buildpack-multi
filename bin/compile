@@ -39,12 +39,14 @@ for BUILDPACK in $(cat $1/.buildpacks); do
     cd $dir
 
     if [ "$branch" != "" ]; then
+      echo "=====> Checking out $branch"
       git checkout $branch >/dev/null 2>&1
     fi
 
     # we'll get errors later if these are needed and don't exist
     chmod -f +x $dir/bin/{detect,compile,release} || true
 
+    echo "=====> Delegating detect to $url"
     framework=$($dir/bin/detect $1)
 
     if [ $? == 0 ]; then
